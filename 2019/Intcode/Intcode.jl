@@ -87,6 +87,13 @@ function Base.iterate(c::Computer, position)
     return (op, c.position)
 end
 
-export Computer, Operation, execute!
+function reset!(c::Computer, instructions::Vector{Int})
+    c.instructions = OffsetVector(copy(instructions), 0:(length(instructions)-1))
+    c.position = 0
+    c.relative_base = 0
+    c.finished = false
+end
+
+export Computer, Operation, execute!, reset!
 
 end
