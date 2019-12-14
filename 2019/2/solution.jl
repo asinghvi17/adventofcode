@@ -1,34 +1,21 @@
-using Printf, DelimitedFiles
+using Printf, DelimitedFiles, Revise
 
-mods = readdlm("input.txt")
+includet("../Intcode/Intcode.jl")
 
-"""
-    fuel(mass)
+instructions = read("$(@__DIR__)/input.txt", String) |> x-> split(x, ',') .|> x-> parse(Int, x)
 
-Calculates the fuel requirement for a given mass,
-which is defined as:
+instructions[2] = 12
+instructions[3] = 2
 
-```math
-\\mathrm{floor}(\frac x3) - 2
-```
+c = Intcode.Computer(instructions)
 
-Naturally a fuel requirement cannot be negative;
-thus, as required by the problem, negative fuel
-requirements are replaced by 0.
-"""
-function fuel(mass::T) where T
-    
-    f = floor(mass / 3) - 2 # calculate raw fuel requirement
+# iterate(c)
+#
+# c
+# iterate(c, 4)
 
-    return f > zero(T) ? f : zero(T)
-
+for op in c
+    Intcode.execute!(c, op)
 end
 
-function loopfuel(mass::T) where T
-    
-    flag = false
-
-end
-
-@printf("%F", sum(fuels)) # print the full floating point number
-
+c.instructions[0]
